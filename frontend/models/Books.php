@@ -8,9 +8,10 @@ use Yii;
  * This is the model class for table "books".
  *
  * @property int $bookId
- * @property int $bookName
+ * @property string $bookName
  * @property string $referenceNumber
  * @property string $publisher
+ * @property int|null $status Status 0, status 1, status 2
  *
  * @property Bookauthor[] $bookauthors
  * @property Borrowedbooks[] $borrowedbooks
@@ -32,6 +33,7 @@ class Books extends \yii\db\ActiveRecord
     {
         return [
             [['bookName', 'referenceNumber', 'publisher'], 'required'],
+            [['status'], 'integer'],
             [['bookName'], 'string', 'max' => 255],
             [['referenceNumber', 'publisher'], 'string', 'max' => 50],
         ];
@@ -47,6 +49,7 @@ class Books extends \yii\db\ActiveRecord
             'bookName' => 'Book Name',
             'referenceNumber' => 'Reference Number',
             'publisher' => 'Publisher',
+            'status' => 'Status',
         ];
     }
 

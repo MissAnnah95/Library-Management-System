@@ -4,12 +4,12 @@ namespace frontend\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use frontend\models\Books;
+use frontend\models\Borrowedbooks;
 
 /**
- * BooksSearch represents the model behind the search form of `frontend\models\Books`.
+ * BorrowedbooksSearch represents the model behind the search form of `frontend\models\Borrowedbooks`.
  */
-class BooksSearch extends Books
+class BorrowedbooksSearch extends Borrowedbooks
 {
     /**
      * {@inheritdoc}
@@ -17,8 +17,8 @@ class BooksSearch extends Books
     public function rules()
     {
         return [
-            [['bookId', 'status'], 'integer'],
-            [['bookName', 'referenceNumber', 'publisher'], 'safe'],
+            [['bbId', 'studentId', 'bookId'], 'integer'],
+            [['borrowDate', 'expectedReturn', 'actualReturnDate'], 'safe'],
         ];
     }
 
@@ -40,7 +40,7 @@ class BooksSearch extends Books
      */
     public function search($params)
     {
-        $query = Books::find();
+        $query = Borrowedbooks::find()->where(['actualReturnDate'=>NULL]);
 
         // add conditions that should always apply here
 
@@ -58,13 +58,13 @@ class BooksSearch extends Books
 
         // grid filtering conditions
         $query->andFilterWhere([
+            'bbId' => $this->bbId,
+            'studentId' => $this->studentId,
             'bookId' => $this->bookId,
-            'status' => $this->status,
+            'borrowDate' => $this->borrowDate,
+            'expectedReturn' => $this->expectedReturn,
+            'actualReturnDate' => $this->actualReturnDate,           
         ]);
-
-        $query->andFilterWhere(['like', 'bookName', $this->bookName])
-            ->andFilterWhere(['like', 'referenceNumber', $this->referenceNumber])
-            ->andFilterWhere(['like', 'publisher', $this->publisher]);
 
         return $dataProvider;
     }

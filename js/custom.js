@@ -2,7 +2,7 @@ $(document).ready(function() {
 	
 	$('.assighnbook').click(function(e){
 			e.preventDefault();
-       $.get('assighnbook/assignbook',function(data){
+       $.get('create',function(data){
 			$('#assignbook').modal('show')
 		 		.find('#assignbookContent')
 		 		.html(data);
@@ -17,4 +17,15 @@ $(document).ready(function() {
 				 .html(data);
 		});
 	});
+
+	$('.returnbook').click(function(e){
+		e.preventDefault();
+		var id = $(this).attr("val");
+	   $.get('returnbook?id='+id,function(data){
+			$('#returnbook').modal('show')
+				 .find('#returnbookContent')
+				 .html(data);
+	});
+});
+
 });
