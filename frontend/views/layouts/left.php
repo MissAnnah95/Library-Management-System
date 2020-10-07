@@ -76,8 +76,8 @@
                 'options' => ['class' => 'sidebar-menu tree', 'data-widget'=> 'tree'],
                 'items' => [
                     ['label' => 'DASHBOARD', 'icon' => 'home', 'url' => ['/site/index']],
-                    ['label' => 'CATALOG', 'icon' => 'book', 'url' => ['/book/index']],
-                    ['label' => 'STUDENTS', 'icon' => 'users', 'url' => ['/student/index']],
+                    ['label' => 'CATALOG', 'icon' => 'book', 'url' => ['/books/index']],
+                    ['label' => 'STUDENTS', 'icon' => 'users', 'url' => ['/students/index']],
                 ],
             ]
         ) ?>
@@ -88,7 +88,7 @@
                 'options' => ['class' => 'sidebar-menu tree', 'data-widget'=> 'tree'],
                 'items' => [
                     ['label' => 'DASHBOARD', 'icon' => 'home', 'url' => ['/site/index']],
-                    ['label' => 'CATALOG', 'icon' => 'book', 'url' => ['/book/index']],
+                    ['label' => 'CATALOG', 'icon' => 'book', 'url' => ['/books/index']],
                 ],
             ]
         ) ?>

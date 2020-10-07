@@ -107,6 +107,23 @@ class BooksController extends Controller
         }
         return false;
     }
+    // modal for students to request books.
+
+    public function actionRequestbook()
+    {
+        $model = new \frontend\models\Books();
+
+        if ($model->load(Yii::$app->request->post())) {
+            if ($model->validate()) {
+                // form inputs are valid, do something here
+                return;
+            }
+        }
+
+        return $this->render('requestbook', [
+            'model' => $model,
+        ]);
+    }
 
     /**
      * Updates an existing Books model.
