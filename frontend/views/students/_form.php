@@ -19,7 +19,7 @@ $students = ArrayHelper::map(Students::find() ->all(),'studentId', 'fullName');
 
     <?= $form->field($model, 'userId')->dropDownList($users) ?>
 
-    <?= $form->field($model, 'fullName')->dropDownList($students) ?>
+    <?= $form->field($model, 'fullName')->textInput(['maxlength' => true])?>
 
     <?= $form->field($model, 'idNumber')->textInput(['maxlength' => true]) ?>
 

@@ -9,6 +9,7 @@ use frontend\models\Bookauthor;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use frontend\models\Borrowedbooks;
 
 /**
  * BooksController implements the CRUD actions for Books model.
@@ -111,19 +112,25 @@ class BooksController extends Controller
 
     public function actionRequestbook()
     {
-        $model = new \frontend\models\Books();
+        $model = new Borrowedbooks();
 
-        if ($model->load(Yii::$app->request->post())) {
-            if ($model->validate()) {
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            $this->afterBookRequest($model->bookId);
                 // form inputs are valid, do something here
-                return;
-            }
+                return $this->redirect(['index']);
+            
         }
 
-        return $this->render('requestbook', [
+        return $this->renderAjax('requestbook', [
             'model' => $model,
         ]);
     }
+
+    public function afterBookRequest($bookId){
+        $command = \Yii::$app->db->createCommand('UPDATE books SET status=2 WHERE bookId='.$bookId);
+        $command->execute();
+        return true;
+      }
 
     /**
      * Updates an existing Books model.

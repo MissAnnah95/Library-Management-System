@@ -28,4 +28,15 @@ $(document).ready(function() {
 	});
 });
 
+	$('.requestbook').click(function(e){
+		e.preventDefault();
+		var id = $(this).attr("val");
+	$.get('requestbook?id='+id,function(data){
+			$('#requestbook').modal('show')
+				.find('#requestbookContent')
+				.html(data);
+	});
+});
+
+
 });

@@ -77,7 +77,12 @@ $this->params['breadcrumbs'][] = $this->title;
           <div class="box">
             <div class="box-header">
         	<div style="padding-top: 20px;">
-        	   <button type="button" class="btn btn-block btn-success btn-lg assighnbook" style="width: 300px;"><i class="fa fa-plus" aria-hidden="true"></i> Assighn a Book</button>
+          <?php if(Yii::$app->user->can('librarian')){ ?>
+                <button type="button" class="btn btn-primary assignbook" aria-controls="example1"><span class="fa fa-plus"> Assign a Book</span></button>
+              <?php }?>
+              <?php if(Yii::$app->user->can('student')){ ?>
+                <button type="button" class="btn btn-primary borrowbook" aria-controls="example1"><span class="fa fa-plus"> Borrow Book</span></button>
+              <?php }?>
             </div>
             <div style="text-align: center;">
                  <h2 class="box-title"><strong>BOOK ASSIGNMENTS</strong></h2>
@@ -93,6 +98,7 @@ $this->params['breadcrumbs'][] = $this->title;
               </div>
             </div>
             <!-- /.box-header -->
+            <?php if(Yii::$app->user->can('librarian')){ ?>
             <div class="box-body table-responsive no-padding">
                             <?= GridView::widget([
                         'dataProvider' => $dataProvider,
@@ -145,13 +151,16 @@ $this->params['breadcrumbs'][] = $this->title;
                             $bookStatus = Books::find()->where(['bookId'=>$dataProvider->bookId])->One();
                             if($bookStatus->status==0){
                               $status = 'Available';
+                              return '<span class="btn btn-info">'.$status.'</span>';
                             }elseif($bookStatus->status==1){
                               $status = 'Issued';
+                              return '<span class="btn btn-success">'.$status.'</span>';
                             }elseif($bookStatus->status==2){
                               $status = 'Pending';
+                              return '<span class="btn btn-danger">'.$status.'</span>';
                             }
                               
-                            return '<span class="btn btn-info">'.$status.'</span>';
+                            //return '<span class="btn btn-info">'.$status.'</span>';
                           },
                           
                       ],
@@ -161,7 +170,73 @@ $this->params['breadcrumbs'][] = $this->title;
                   ],
               ]); ?>
             </div>
+            <?php }?>
             <!-- /.box-body -->
+            <?php if(Yii::$app->user->can('student')){ ?>
+            <div class="box-body table-responsive no-padding">
+                            <?= GridView::widget([
+                        'dataProvider' => $dataProvider,
+                        'filterModel' => $searchModel,
+                        'columns' => [
+                            ['class' => 'yii\grid\SerialColumn'],
+
+                             //'bbId',
+                        [
+                          'attribute' => 'studentId',
+                          'value' => function ($dataProvider) {
+                              $studentName = Students::find()->where(['studentId'=>$dataProvider->studentId])->One();
+                              return $studentName->fullName;
+                          },
+                      ],
+                      [
+                          'attribute' => 'bookId',
+                          'value' => function ($dataProvider) {
+                          $studentName = Books::find()->where(['bookId'=>$dataProvider->bookId])->One();
+                          return $studentName->bookName;
+                          },
+                      ],
+                      [
+                          'attribute' => 'borrowDate',
+                          'value' => function ($dataProvider) {
+                              $date = new DateTime($dataProvider->borrowDate);
+                              return $date->format('F j, Y,');
+                          },
+                      ],
+                      [
+                          'attribute' => 'expectedReturn',
+                          'value' => function ($dataProvider) {
+                          $date = new DateTime($dataProvider->expectedReturn);
+                          return $date->format('F j, Y,');
+                          },
+                      ],
+                      'actualReturnDate',                      
+                      [
+                        'label'=>'Status',
+                        'format' => 'raw',
+                        'value' => function ($dataProvider) {
+                            $bookStatus = Books::find()->where(['bookId'=>$dataProvider->bookId])->One();
+                            if($bookStatus->status==0){
+                              $status = 'Available';
+                              return '<span class="btn btn-info">'.$status.'</span>';
+                            }elseif($bookStatus->status==1){
+                              $status = 'Issued';
+                              return '<span class="btn btn-success">'.$status.'</span>';
+                            }elseif($bookStatus->status==2){
+                              $status = 'Pending';
+                              return '<span class="btn btn-danger">'.$status.'</span>';
+                            }
+                              
+                            //return '<span class="btn btn-info">'.$status.'</span>';
+                          },
+                          
+                      ],
+                      //'actualReturnDate',
+          
+                      ['class' => 'yii\grid\ActionColumn'],
+                  ],
+              ]); ?>
+            </div>
+            <?php }?>
           </div>
           <!-- /.box -->
         </div>
